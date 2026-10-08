@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arda studio - Android Games & Applications</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0066FF',
+                            purple: '#7C3AED',
+                            cyan: '#06B6D4',
+                            dark: '#0B0F17',
+                            card: '#161F30',
+                            border: '#2A364F'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4' },
+                            '50%': { opacity: '0.8' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F17;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(22, 31, 48, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-6px);
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 12px 30px -10px rgba(0, 102, 255, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38BDF8 0%, #818CF8 50%, #C084FC 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0066FF 0%, #7C3AED 100%);
+        }
+        .logo-shadow {
+            filter: drop-shadow(0px 8px 16px rgba(0, 102, 255, 0.35));
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-card border-b border-gray-800/60 py-3.5 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Studio Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                    a
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-extrabold tracking-tight text-white group-hover:text-cyan-400 transition-colors">arda studio</span>
+                    <span class="text-[10px] text-gray-400 -mt-1 tracking-widest uppercase">Mobile Apps & Games</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#apps" class="hover:text-cyan-400 transition-colors" data-i18n="navApps">Uygulamalar & Oyunlar</a>
+                <a href="#highlights" class="hover:text-cyan-400 transition-colors" data-i18n="navHighlights">Özellikler</a>
+                <a href="#about" class="hover:text-cyan-400 transition-colors" data-i18n="navAbout">Hakkımızda</a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors" data-i18n="navContact">İletişim</a>
+            </nav>
+
+            <!-- Language Switcher & Store Actions -->
+            <div class="hidden sm:flex items-center gap-3">
+                <!-- TR / EN Toggle Button -->
+                <button id="lang-toggle-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-800/90 text-gray-200 border border-gray-700/80 hover:border-cyan-500/60 transition-all">
+                    <i class="fas fa-globe text-cyan-400"></i>
+                    <span id="lang-indicator">TR | EN</span>
+                </button>
+
+                <a href="https://play.google.com/store" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-gray-800/80 hover:bg-gray-700 text-white border border-gray-700/60 transition-all hover:border-cyan-500/50">
+                    <i class="fab fa-google-play text-cyan-400 text-base"></i>
+                    <span>Play Store</span>
+                </a>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button id="lang-toggle-btn-mobile" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-gray-800 text-cyan-400 border border-gray-700">
+                    TR / EN
+                </button>
+                <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2 text-xl" aria-label="Menu Toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2 px-2 flex flex-col gap-3 border-t border-gray-800/80 mt-3 text-sm">
+            <a href="#apps" class="mobile-link block py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300" data-i18n="navApps">Uygulamalar & Oyunlar</a>
+            <a href="#highlights" class="mobile-link block py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300" data-i18n="navHighlights">Özellikler</a>
+            <a href="#about" class="mobile-link block py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300" data-i18n="navAbout">Hakkımızda</a>
+            <a href="#contact" class="mobile-link block py-2 px-3 rounded-lg hover:bg-gray-800 text-gray-300" data-i18n="navContact">İletişim</a>
+            <a href="https://play.google.com/store" target="_blank" class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold gradient-bg text-white mt-2">
+                <i class="fab fa-google-play"></i>
+                <span>Google Play Store</span>
+            </a>
+        </div>
+    </header>
+
+    <section class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden px-4">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-glow"></div>
+        <div class="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card text-xs font-medium text-cyan-300 border border-cyan-500/30">
+                    <span class="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    <span data-i18n="heroBadge">Android Developer Studio</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+                    <span data-i18n="heroTitleLine1">Sınırsız Eğlence ve</span> <br class="hidden sm:inline">
+                    <span class="gradient-text" data-i18n="heroTitleLine2">Yenilikçi Mobil</span> <span data-i18n="heroTitleLine3">Deneyimler</span>
+                </h1>
+
+                <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed" data-i18n="heroDescription">
+                    arda studio, Google Play'de IPTV medya oynatıcılarından eğlenceli ve bağımlılık yapan oyunlara kadar kullanıcı odaklı mobil çözümler üretir.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                    <a href="#apps" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl font-bold text-white gradient-bg hover:opacity-90 transition-all shadow-xl shadow-blue-500/25 flex items-center justify-center gap-3 group">
+                        <i class="fas fa-shapes group-hover:rotate-12 transition-transform"></i>
+                        <span data-i18n="btnExplore">Uygulamaları Keşfet</span>
+                    </a>
+                    <a href="https://play.google.com/store" target="_blank" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl font-semibold text-gray-200 glass-card hover:bg-gray-800 transition-all flex items-center justify-center gap-3 border border-gray-700">
+                        <i class="fab fa-google-play text-cyan-400"></i>
+                        <span data-i18n="btnPlayStore">Play Store Profilimiz</span>
+                    </a>
+                </div>
+
+                <!-- Stats Bar -->
+                <div class="pt-8 border-t border-gray-800/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-center">
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-white">4+</div>
+                        <div class="text-xs text-gray-400 mt-0.5" data-i18n="statApps">Popüler Mobil Ürün</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-cyan-400">100%</div>
+                        <div class="text-xs text-gray-400 mt-0.5" data-i18n="statUx">Kullanıcı Dostu</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-purple-400">Offline</div>
+                        <div class="text-xs text-gray-400 mt-0.5" data-i18n="statOffline">Oyun Desteği</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone Frame Graphic with Real Vectors -->
+            <div class="lg:col-span-5 flex justify-center items-center">
+                <div class="relative w-full max-w-xs sm:max-w-sm animate-float">
+                    <div class="glass-card rounded-[40px] p-4 border-2 border-gray-700/50 shadow-2xl shadow-cyan-500/10">
+                        <div class="bg-gray-900 rounded-[32px] overflow-hidden border border-gray-800 p-5 space-y-5">
+                            <div class="flex justify-between items-center text-xs text-gray-400">
+                                <span>09:41</span>
+                                <div class="flex items-center gap-1.5">
+                                    <i class="fas fa-wifi"></i>
+                                    <i class="fas fa-battery-full"></i>
+                                </div>
+                            </div>
+
+                            <!-- Phone Screen App Item 1 -->
+                            <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-900/60 to-purple-900/60 border border-blue-500/30 flex items-center gap-3">
+                                <!-- Playio Real Vector Logo -->
+                                <svg class="w-12 h-12 rounded-xl logo-shadow flex-shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="100" height="100" rx="22" fill="url(#hero_playio_grad)"/>
+                                    <path d="M38 30L72 50L38 70V30Z" fill="white"/>
+                                    <circle cx="70" cy="30" r="6" fill="#00F0FF"/>
+                                    <defs>
+                                        <linearGradient id="hero_playio_grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#0052D4"/>
+                                            <stop offset="0.5" stop-color="#4364F7"/>
+                                            <stop offset="1" stop-color="#6FB1FC"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">Playio</h4>
+                                    <p class="text-[10px] text-cyan-300">IPTV & Medya Player</p>
+                                </div>
+                            </div>
+
+                            <!-- Phone Screen App Mini List -->
+                            <div class="space-y-2.5">
+                                <div class="flex items-center gap-3 p-2.5 rounded-xl bg-gray-800/60 border border-gray-700/50">
+                                    <!-- 50 Kuruş SVG Logo -->
+                                    <svg class="w-9 h-9 rounded-lg flex-shrink-0" viewBox="0 0 100 100">
+                                        <rect width="100" height="100" rx="20" fill="url(#hero_50k)"/>
+                                        <circle cx="50" cy="50" r="32" fill="none" stroke="#FFF" stroke-width="6"/>
+                                        <text x="50" y="58" font-family="Inter, sans-serif" font-weight="900" font-size="30" fill="#FFF" text-anchor="middle">50₺</text>
+                                        <defs>
+                                            <linearGradient id="hero_50k" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#F59E0B"/>
+                                                <stop offset="1" stop-color="#D97706"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <div class="text-left">
+                                        <div class="text-xs font-bold text-gray-200">50 Kuruş</div>
+                                        <div class="text-[10px] text-gray-400">Eğlenceli Oyun</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3 p-2.5 rounded-xl bg-gray-800/60 border border-gray-700/50">
+                                    <!-- 1peso SVG Logo -->
+                                    <svg class="w-9 h-9 rounded-lg flex-shrink-0" viewBox="0 0 100 100">
+                                        <rect width="100" height="100" rx="20" fill="url(#hero_1p)"/>
+                                        <circle cx="50" cy="50" r="32" fill="none" stroke="#FFF" stroke-width="6"/>
+                                        <text x="50" y="58" font-family="Inter, sans-serif" font-weight="900" font-size="32" fill="#FFF" text-anchor="middle">1₱</text>
+                                        <defs>
+                                            <linearGradient id="hero_1p" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#10B981"/>
+                                                <stop offset="1" stop-color="#059669"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <div class="text-left">
+                                        <div class="text-xs font-bold text-gray-200">1peso</div>
+                                        <div class="text-[10px] text-gray-400">Arcade & Strateji</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3 p-2.5 rounded-xl bg-gray-800/60 border border-gray-700/50">
+                                    <!-- Offline Games SVG Logo -->
+                                    <svg class="w-9 h-9 rounded-lg flex-shrink-0" viewBox="0 0 100 100">
+                                        <rect width="100" height="100" rx="20" fill="url(#hero_off)"/>
+                                        <path d="M30 40H40V30H60V40H70V60H60V70H40V60H30V40Z" fill="#FFF" opacity="0.9"/>
+                                        <line x1="20" y1="20" x2="80" y2="80" stroke="#EF4444" stroke-width="8" stroke-linecap="round"/>
+                                        <defs>
+                                            <linearGradient id="hero_off" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#8B5CF6"/>
+                                                <stop offset="1" stop-color="#6D28D9"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <div class="text-left">
+                                        <div class="text-xs font-bold text-gray-200">Offline Games</div>
+                                        <div class="text-[10px] text-gray-400">İnternetsiz Oyunlar</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-24 h-1 bg-gray-600 rounded-full mx-auto mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="apps" class="py-20 px-4 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+            <h2 class="text-3xl sm:text-4xl font-extrabold">
+                <span data-i18n="appsTitlePrefix">Öne Çıkan</span> <span class="gradient-text" data-i18n="appsTitleHighlight">Uygulamalar & Oyunlar</span>
+            </h2>
+            <p class="text-gray-400 text-sm sm:text-base" data-i18n="appsSub">
+                arda studio imzalı Play Store uygulamalarını inceleyin. Yüksek performans, modern arayüz ve sınırsız eğlence.
+            </p>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-2 pt-4" id="filter-container">
+                <button data-filter="all" class="filter-btn active px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-cyan-500 text-white shadow-lg shadow-cyan-500/20 transition-all">
+                    <span data-i18n="filterAll">Tümü (4)</span>
+                </button>
+                <button data-filter="games" class="filter-btn px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold glass-card text-gray-300 hover:text-white transition-all">
+                    <i class="fas fa-gamepad mr-1.5 text-purple-400"></i><span data-i18n="filterGames">Oyunlar</span>
+                </button>
+                <button data-filter="media" class="filter-btn px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold glass-card text-gray-300 hover:text-white transition-all">
+                    <i class="fas fa-tv mr-1.5 text-blue-400"></i><span data-i18n="filterMedia">Medya & Araçlar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Apps Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8" id="apps-grid">
+
+            <!-- APP 1: Playio IPTV Player -->
+            <div class="app-card glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between" data-category="media">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20" data-i18n="playioBadge">
+                            Medya & Video
+                        </span>
+                        <div class="flex items-center gap-1 text-yellow-400 text-xs font-semibold">
+                            <i class="fas fa-star"></i>
+                            <span>4.8</span>
+                        </div>
+                    </div>
+
+                    <!-- App Vector Header -->
+                    <div class="flex items-start gap-4 mb-5">
+                        <!-- Custom SVG Logo for Playio -->
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl logo-shadow flex-shrink-0" viewBox="0 0 100 100" fill="none">
+                            <rect width="100" height="100" rx="22" fill="url(#playio_main_grad)"/>
+                            <!-- Tv screen outline & play arrow -->
+                            <rect x="18" y="20" width="64" height="46" rx="8" stroke="white" stroke-width="5" fill="none"/>
+                            <path d="M43 33L63 43L43 53V33Z" fill="white"/>
+                            <path d="M35 78L50 66L65 78" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                            <circle cx="76" cy="24" r="5" fill="#00F0FF"/>
+                            <defs>
+                                <linearGradient id="playio_main_grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#0052D4"/>
+                                    <stop offset="0.5" stop-color="#4364F7"/>
+                                    <stop offset="1" stop-color="#6FB1FC"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-1">Playio</h3>
+                            <p class="text-xs text-gray-400" data-i18n="playioSubtitle">IPTV & Mobil Medya Oynatıcı</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">M3U / M3U8</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">4K Ultra HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6" data-i18n="playioDesc">
+                        Playio, canlı TV yayınlarını, M3U çalma listelerini ve kişisel medya içeriklerinizi yüksek çözünürlükle akıcı bir şekilde oynatmanızı sağlayan gelişmiş bir IPTV oyuncusudur.
+                    </p>
+
+                    <ul class="space-y-2 mb-8 text-xs text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> <span data-i18n="playioFeat1">Özelleştirilebilir Oynatma Listeleri</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> <span data-i18n="playioFeat2">Akıllı EPG (Program Rehberi) Entegrasyonu</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyan-400"></i> <span data-i18n="playioFeat3">Düşük Arabellekleme (Buffer) Algoritması</span></li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between gap-4">
+                    <div class="text-xs text-gray-400" data-i18n="tagFreeAndroid">Ücretsiz • Android</div>
+                    <button onclick="openModal('Playio', 'Media & Video Player')" class="px-5 py-2.5 rounded-xl text-xs font-bold gradient-bg text-white hover:opacity-90 transition-all flex items-center gap-2">
+                        <i class="fab fa-google-play"></i>
+                        <span data-i18n="btnDownload">İncele / İndir</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- APP 2: 50 Kuruş -->
+            <div class="app-card glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between" data-category="games">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20" data-i18n="kurusBadge">
+                            Eğlenceli Oyun
+                        </span>
+                        <div class="flex items-center gap-1 text-yellow-400 text-xs font-semibold">
+                            <i class="fas fa-star"></i>
+                            <span>4.7</span>
+                        </div>
+                    </div>
+
+                    <!-- Custom SVG Logo for 50 Kuruş -->
+                    <div class="flex items-start gap-4 mb-5">
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl logo-shadow flex-shrink-0" viewBox="0 0 100 100" fill="none">
+                            <rect width="100" height="100" rx="22" fill="url(#kurus_grad)"/>
+                            <!-- Coin Outer Circle -->
+                            <circle cx="50" cy="50" r="36" fill="none" stroke="#FFF" stroke-width="4" stroke-dasharray="6 3"/>
+                            <circle cx="50" cy="50" r="30" fill="none" stroke="#FEF08A" stroke-width="3"/>
+                            <!-- Coin Symbol Text -->
+                            <text x="50" y="58" font-family="Inter, sans-serif" font-weight="900" font-size="28" fill="#FFF" text-anchor="middle">50₺</text>
+                            <defs>
+                                <linearGradient id="kurus_grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#F59E0B"/>
+                                    <stop offset="0.5" stop-color="#D97706"/>
+                                    <stop offset="1" stop-color="#B45309"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-1">50 Kuruş</h3>
+                            <p class="text-xs text-gray-400" data-i18n="kurusSubtitle">Kültürel & Eğlenceli Mobil Oyun</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">Skor Yarışı</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">Refleks</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6" data-i18n="kurusDesc">
+                        Eğlenceli grafikler ve dinamik oynanış ile hazırlanmış yerli temalı mobil oyun! Madeni para dinamiklerini ve sürpriz engelleri aşarak en yüksek skora ulaşmaya çalışın.
+                    </p>
+
+                    <ul class="space-y-2 mb-8 text-xs text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-400"></i> <span data-i18n="kurusFeat1">Bağımlılık Yapıcı Oyun Dinamiği</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-400"></i> <span data-i18n="kurusFeat2">Özel Ses Efektleri & Müzikler</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-400"></i> <span data-i18n="kurusFeat3">Liderlik Tablosu & Görevler</span></li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between gap-4">
+                    <div class="text-xs text-gray-400" data-i18n="tagFreeCasual">Ücretsiz • Casual</div>
+                    <button onclick="openModal('50 Kuruş', 'Fun Arcade Game')" class="px-5 py-2.5 rounded-xl text-xs font-bold gradient-bg text-white hover:opacity-90 transition-all flex items-center gap-2">
+                        <i class="fab fa-google-play"></i>
+                        <span data-i18n="btnDownload">İncele / İndir</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- APP 3: 1peso -->
+            <div class="app-card glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between" data-category="games">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" data-i18n="pesoBadge">
+                            Arcade & Strateji
+                        </span>
+                        <div class="flex items-center gap-1 text-yellow-400 text-xs font-semibold">
+                            <i class="fas fa-star"></i>
+                            <span>4.6</span>
+                        </div>
+                    </div>
+
+                    <!-- Custom SVG Logo for 1peso -->
+                    <div class="flex items-start gap-4 mb-5">
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl logo-shadow flex-shrink-0" viewBox="0 0 100 100" fill="none">
+                            <rect width="100" height="100" rx="22" fill="url(#peso_grad)"/>
+                            <!-- Peso Emblem -->
+                            <circle cx="50" cy="50" r="35" fill="none" stroke="#6EE7B7" stroke-width="4"/>
+                            <path d="M38 32H56C62 32 66 36 66 42C66 48 62 52 56 52H38V32Z" stroke="#FFF" stroke-width="6" fill="none"/>
+                            <line x1="38" y1="32" x2="38" y2="72" stroke="#FFF" stroke-width="6" stroke-linecap="round"/>
+                            <line x1="30" y1="42" x2="62" y2="42" stroke="#FFF" stroke-width="4"/>
+                            <line x1="30" y1="48" x2="62" y2="48" stroke="#FFF" stroke-width="4"/>
+                            <defs>
+                                <linearGradient id="peso_grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#10B981"/>
+                                    <stop offset="0.5" stop-color="#059669"/>
+                                    <stop offset="1" stop-color="#047857"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-1">1peso</h3>
+                            <p class="text-xs text-gray-400" data-i18n="pesoSubtitle">Sürükleyici Mobil Oyun</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">Minigame</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">Challenge</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6" data-i18n="pesoDesc">
+                        1peso, strateji ve zamanlamanın ön planda olduğu heyecan verici bir mobil deneyim sunar. Hızlı kararlar verin, zorlu seviyeleri geçin ve liderlik tablosunun zirvesine tırmanın.
+                    </p>
+
+                    <ul class="space-y-2 mb-8 text-xs text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i> <span data-i18n="pesoFeat1">Akıcı ve Kolay Kontroller</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i> <span data-i18n="pesoFeat2">Çeşitli Bölüm Tasarımları</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i> <span data-i18n="pesoFeat3">Düşük Boyut & Hızlı Yüklenme</span></li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between gap-4">
+                    <div class="text-xs text-gray-400" data-i18n="tagFreeArcade">Ücretsiz • Arcade</div>
+                    <button onclick="openModal('1peso', 'Arcade Strategy Game')" class="px-5 py-2.5 rounded-xl text-xs font-bold gradient-bg text-white hover:opacity-90 transition-all flex items-center gap-2">
+                        <i class="fab fa-google-play"></i>
+                        <span data-i18n="btnDownload">İncele / İndir</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- APP 4: Offline Games -->
+            <div class="app-card glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between" data-category="games">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20" data-i18n="offBadge">
+                            İnternetsiz Oyunlar
+                        </span>
+                        <div class="flex items-center gap-1 text-yellow-400 text-xs font-semibold">
+                            <i class="fas fa-star"></i>
+                            <span>4.9</span>
+                        </div>
+                    </div>
+
+                    <!-- Custom SVG Logo for Offline Games -->
+                    <div class="flex items-start gap-4 mb-5">
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl logo-shadow flex-shrink-0" viewBox="0 0 100 100" fill="none">
+                            <rect width="100" height="100" rx="22" fill="url(#off_grad)"/>
+                            <!-- Gamepad with No WiFi Strike -->
+                            <rect x="20" y="32" width="60" height="36" rx="10" fill="#FFF" opacity="0.9"/>
+                            <circle cx="34" cy="50" r="4" fill="#6D28D9"/>
+                            <circle cx="66" cy="45" r="3" fill="#EF4444"/>
+                            <circle cx="73" cy="52" r="3" fill="#3B82F6"/>
+                            <!-- Strike line -->
+                            <line x1="18" y1="18" x2="82" y2="82" stroke="#EF4444" stroke-width="8" stroke-linecap="round"/>
+                            <defs>
+                                <linearGradient id="off_grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#8B5CF6"/>
+                                    <stop offset="0.5" stop-color="#7C3AED"/>
+                                    <stop offset="1" stop-color="#5B21B6"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-1">Offline Games</h3>
+                            <p class="text-xs text-gray-400" data-i18n="offSubtitle">İnternetsiz Mini Oyun Koleksiyonu</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">No WiFi</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300">Çoklu Oyun</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6" data-i18n="offDesc">
+                        İnternet bağlantısına ihtiyaç duymadan her yerde oynayabileceğiniz eğlenceli mini oyunlar bir arada! Seyahatlerde, otobüste veya internetsiz anlarınızda en büyük eğlence kaynağınız.
+                    </p>
+
+                    <ul class="space-y-2 mb-8 text-xs text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> <span data-i18n="offFeat1">%100 İnternetsiz Çalışma Desteği</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> <span data-i18n="offFeat2">Bulmaca, Beceri ve Aksiyon Oyunları</span></li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-purple-400"></i> <span data-i18n="offFeat3">Batarya ve Veri Dostu Yapı</span></li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 border-t border-gray-800/80 flex items-center justify-between gap-4">
+                    <div class="text-xs text-gray-400" data-i18n="tagFreeSuite">Ücretsiz • Mini Games</div>
+                    <button onclick="openModal('Offline Games', 'Offline Mini Games Collection')" class="px-5 py-2.5 rounded-xl text-xs font-bold gradient-bg text-white hover:opacity-90 transition-all flex items-center gap-2">
+                        <i class="fab fa-google-play"></i>
+                        <span data-i18n="btnDownload">İncele / İndir</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="highlights" class="py-20 px-4 bg-gray-950/50 border-y border-gray-800/60">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-cyan-400" data-i18n="featTag">Neden arda studio?</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold" data-i18n="featTitle">Kaliteli Mobil Deneyim Şifrelerimiz</h2>
+                <p class="text-gray-400 text-sm" data-i18n="featSub">Geliştirdiğimiz her uygulamada kullanıcı memnuniyetini ve performansı ilk sırada tutuyoruz.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card rounded-2xl p-6 border border-gray-800 space-y-4 hover:border-cyan-500/40 transition-colors">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold" data-i18n="card1Title">Yüksek Performans & Hız</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="card1Desc">
+                        Kod optimize yapımız sayesinde cihazınızı yormayan, düşük pil tüketen ve ışık hızında açılan mobil yazılımlar tasarlıyoruz.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-gray-800 space-y-4 hover:border-purple-500/40 transition-colors">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-wifi-slash"></i>
+                    </div>
+                    <h3 class="text-xl font-bold" data-i18n="card2Title">İnternetsiz Erişim</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="card2Desc">
+                        Oyunlarımızın büyük kısmı internet bağlantısı olmadan da kesintisiz oynanabilir şekilde tasarlanmaktadır.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-gray-800 space-y-4 hover:border-blue-500/40 transition-colors">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="text-xl font-bold" data-i18n="card3Title">Kullanıcı Dostu & Güvenli</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="card3Desc">
+                        Kullanıcı gizliliğine önem veriyor, modern ve sade kullanıcı arayüzleri (UI/UX) ile sezgisel kullanım sunuyoruz.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 px-4 max-w-7xl mx-auto w-full">
+        <div class="glass-card rounded-3xl p-8 sm:p-12 border border-gray-800 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400" data-i18n="aboutBadge">
+                        Geliştirici Hakkında
+                    </div>
+                    <h2 class="text-3xl font-extrabold" data-i18n="aboutTitle">
+                        arda studio Vizyonu
+                    </h2>
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed" data-i18n="aboutP1">
+                        arda studio, Android ekosisteminde kullanıcıların ihtiyaç duyduğu pratik medya uygulamalarını ve günün stresini atabilecekleri eğlenceli oyunları üretmek amacıyla kurulmuş yenilikçi bir geliştirici stüdyosudur.
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed" data-i18n="aboutP2">
+                        Playio ile medya oynatıcı standartlarını yükseltirken, 50 Kuruş, 1peso ve Offline Games gibi oyunlarımızla mobil eğlence dünyasında fark yaratmaya devam ediyoruz.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-4 flex justify-center">
+                    <div class="w-44 h-44 rounded-3xl gradient-bg flex flex-col items-center justify-center text-white p-6 text-center shadow-2xl shadow-blue-500/30">
+                        <span class="text-4xl font-black mb-1">arda</span>
+                        <span class="text-xs uppercase tracking-widest text-cyan-200">Studio Team</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 px-4 max-w-4xl mx-auto w-full">
+        <div class="text-center space-y-4 mb-12">
+            <h2 class="text-3xl font-extrabold" data-i18n="contactTitle">Bize Ulaşın & Geri Bildirim</h2>
+            <p class="text-gray-400 text-sm" data-i18n="contactSub">
+                Uygulamalarımız hakkında bir soru, destek talebi veya öneriniz mi var? Aşağıdaki form ile bize iletebilirsiniz.
+            </p>
+        </div>
+
+        <div class="glass-card rounded-3xl p-6 sm:p-10 border border-gray-800">
+            <form id="contact-form" class="space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-2" data-i18n="labelName">Adınız / Rumuz</label>
+                        <input type="text" required placeholder="Adınız" class="w-full px-4 py-3 rounded-xl bg-gray-900/80 border border-gray-700/80 text-white text-sm focus:outline-none focus:border-cyan-500 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-2" data-i18n="labelEmail">E-Posta Adresiniz</label>
+                        <input type="email" required placeholder="ornek@mail.com" class="w-full px-4 py-3 rounded-xl bg-gray-900/80 border border-gray-700/80 text-white text-sm focus:outline-none focus:border-cyan-500 transition-colors">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-2" data-i18n="labelApp">İlgili Uygulama</label>
+                    <select class="w-full px-4 py-3 rounded-xl bg-gray-900/80 border border-gray-700/80 text-white text-sm focus:outline-none focus:border-cyan-500 transition-colors">
+                        <option data-i18n="optGeneral">Genel Sorular / Destek</option>
+                        <option>Playio (IPTV Player)</option>
+                        <option>50 Kuruş Game</option>
+                        <option>1peso Game</option>
+                        <option>Offline Games</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-2" data-i18n="labelMsg">Mesajınız</label>
+                    <textarea rows="4" required placeholder="..." class="w-full px-4 py-3 rounded-xl bg-gray-900/80 border border-gray-700/80 text-white text-sm focus:outline-none focus:border-cyan-500 transition-colors"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl text-sm font-bold gradient-bg text-white hover:opacity-90 transition-all shadow-lg shadow-blue-500/20">
+                    <i class="fas fa-paper-plane mr-2"></i><span data-i18n="btnSubmit">Mesaj Gönder</span>
+                </button>
+            </form>
+
+            <div id="form-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-sm text-center">
+                <i class="fas fa-check-circle mr-2"></i><span data-i18n="msgSuccess">Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağız.</span>
+            </div>
+        </div>
+    </section>
+
+    <div id="app-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="glass-card rounded-3xl max-w-md w-full p-6 sm:p-8 border border-gray-700 relative animate-float" style="animation-duration: 0.3s;">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl p-2">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl gradient-bg mx-auto flex items-center justify-center text-white text-2xl shadow-lg">
+                    <i class="fab fa-google-play"></i>
+                </div>
+                <div>
+                    <h3 id="modal-app-title" class="text-2xl font-bold text-white">Uygulama Adı</h3>
+                    <p id="modal-app-sub" class="text-xs text-gray-400 mt-1">Google Play Store</p>
+                </div>
+
+                <p class="text-xs text-gray-300 leading-relaxed bg-gray-900/60 p-4 rounded-xl border border-gray-800" data-i18n="modalNote">
+                    Sizi doğrudan official Google Play Store indirme sayfasına yönlendiriyoruz. İndirdikten sonra değerlendirme yapmayı unutmayın!
+                </p>
+
+                <div class="space-y-2 pt-2">
+                    <a id="modal-play-link" href="https://play.google.com/store" target="_blank" class="w-full py-3 rounded-xl text-sm font-bold gradient-bg text-white hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                        <i class="fab fa-google-play"></i>
+                        <span data-i18n="modalBtnPlay">Play Store'da Aç</span>
+                    </a>
+                    <button onclick="closeModal()" class="w-full py-2.5 rounded-xl text-xs font-medium text-gray-400 hover:text-white transition-colors" data-i18n="modalClose">
+                        Kapat
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto border-t border-gray-800/80 bg-gray-950 py-10 px-4 text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center text-white font-bold text-xs">
+                    a
+                </div>
+                <span class="text-sm font-bold text-gray-300">arda studio</span>
+                <span>© 2026 <span data-i18n="footerRights">Tüm Hakları Saklıdır.</span></span>
+            </div>
+
+            <div class="flex items-center gap-6 text-gray-400">
+                <a href="#" class="hover:text-cyan-400 transition-colors" data-i18n="footerPrivacy">Gizlilik Politikası</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors" data-i18n="footerTerms">Kullanım Şartları</a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors" data-i18n="footerSupport">Destek</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dictionary for Language Translation (TR / EN)
+        const translations = {
+            tr: {
+                navApps: "Uygulamalar & Oyunlar",
+                navHighlights: "Özellikler",
+                navAbout: "Hakkımızda",
+                navContact: "İletişim",
+                heroBadge: "Android Developer Studio",
+                heroTitleLine1: "Sınırsız Eğlence ve",
+                heroTitleLine2: "Yenilikçi Mobil",
+                heroTitleLine3: "Deneyimler",
+                heroDescription: "arda studio, Google Play'de IPTV medya oynatıcılarından eğlenceli ve bağımlılık yapan oyunlara kadar kullanıcı odaklı mobil çözümler üretir.",
+                btnExplore: "Uygulamaları Keşfet",
+                btnPlayStore: "Play Store Profilimiz",
+                statApps: "Popüler Mobil Ürün",
+                statUx: "Kullanıcı Dostu",
+                statOffline: "Oyun Desteği",
+                appsTitlePrefix: "Öne Çıkan",
+                appsTitleHighlight: "Uygulamalar & Oyunlar",
+                appsSub: "arda studio imzalı Play Store uygulamalarını inceleyin. Yüksek performans, modern arayüz ve sınırsız eğlence.",
+                filterAll: "Tümü (4)",
+                filterGames: "Oyunlar",
+                filterMedia: "Medya & Araçlar",
+                
+                // App 1
+                playioBadge: "Medya & Video",
+                playioSubtitle: "IPTV & Mobil Medya Oynatıcı",
+                playioDesc: "Playio, canlı TV yayınlarını, M3U çalma listelerini ve kişisel medya içeriklerinizi yüksek çözünürlükle akıcı bir şekilde oynatmanızı sağlayan gelişmiş bir IPTV oyuncusudur.",
+                playioFeat1: "Özelleştirilebilir Oynatma Listeleri",
+                playioFeat2: "Akıllı EPG (Program Rehberi) Entegrasyonu",
+                playioFeat3: "Düşük Arabellekleme (Buffer) Algoritması",
+
+                // App 2
+                kurusBadge: "Eğlenceli Oyun",
+                kurusSubtitle: "Kültürel & Eğlenceli Mobil Oyun",
+                kurusDesc: "Eğlenceli grafikler ve dinamik oynanış ile hazırlanmış yerli temalı mobil oyun! Madeni para dinamiklerini ve sürpriz engelleri aşarak en yüksek skora ulaşmaya çalışın.",
+                kurusFeat1: "Bağımlılık Yapıcı Oyun Dinamiği",
+                kurusFeat2: "Özel Ses Efektleri & Müzikler",
+                kurusFeat3: "Liderlik Tablosu & Görevler",
+
+                // App 3
+                pesoBadge: "Arcade & Strateji",
+                pesoSubtitle: "Sürükleyici Mobil Oyun",
+                pesoDesc: "1peso, strateji ve zamanlamanın ön planda olduğu heyecan verici bir mobil deneyim sunar. Hızlı kararlar verin, zorlu seviyeleri geçin ve liderlik tablosunun zirvesine tırmanın.",
+                pesoFeat1: "Akıcı ve Kolay Kontroller",
+                pesoFeat2: "Çeşitli Bölüm Tasarımları",
+                pesoFeat3: "Düşük Boyut & Hızlı Yüklenme",
+
+                // App 4
+                offBadge: "İnternetsiz Oyunlar",
+                offSubtitle: "İnternetsiz Mini Oyun Koleksiyonu",
+                offDesc: "İnternet bağlantısına ihtiyaç duymadan her yerde oynayabileceğiniz eğlenceli mini oyunlar bir arada! Seyahatlerde, otobüste veya internetsiz anlarınızda en büyük eğlence kaynağınız.",
+                offFeat1: "%100 İnternetsiz Çalışma Desteği",
+                offFeat2: "Bulmaca, Beceri ve Aksiyon Oyunları",
+                offFeat3: "Batarya ve Veri Dostu Yapı",
+
+                tagFreeAndroid: "Ücretsiz • Android",
+                tagFreeCasual: "Ücretsiz • Casual",
+                tagFreeArcade: "Ücretsiz • Arcade",
+                tagFreeSuite: "Ücretsiz • Mini Games",
+                btnDownload: "İncele / İndir",
+
+                featTag: "Neden arda studio?",
+                featTitle: "Kaliteli Mobil Deneyim Şifrelerimiz",
+                featSub: "Geliştirdiğimiz her uygulamada kullanıcı memnuniyetini ve performansı ilk sırada tutuyoruz.",
+                card1Title: "Yüksek Performans & Hız",
+                card1Desc: "Kod optimize yapımız sayesinde cihazınızı yormayan, düşük pil tüketen ve ışık hızında açılan mobil yazılımlar tasarlıyoruz.",
+                card2Title: "İnternetsiz Erişim",
+                card2Desc: "Oyunlarımızın büyük kısmı internet bağlantısı olmadan da kesintisiz oynanabilir şekilde tasarlanmaktadır.",
+                card3Title: "Kullanıcı Dostu & Güvenli",
+                card3Desc: "Kullanıcı gizliliğine önem veriyor, modern ve sade kullanıcı arayüzleri (UI/UX) ile sezgisel kullanım sunuyoruz.",
+
+                aboutBadge: "Geliştirici Hakkında",
+                aboutTitle: "arda studio Vizyonu",
+                aboutP1: "arda studio, Android ekosisteminde kullanıcıların ihtiyaç duyduğu pratik medya uygulamalarını ve günün stresini atabilecekleri eğlenceli oyunları üretmek amacıyla kurulmuş yenilikçi bir geliştirici stüdyosudur.",
+                aboutP2: "Playio ile medya oynatıcı standartlarını yükseltirken, 50 Kuruş, 1peso ve Offline Games gibi oyunlarımızla mobil eğlence dünyasında fark yaratmaya devam ediyoruz.",
+
+                contactTitle: "Bize Ulaşın & Geri Bildirim",
+                contactSub: "Uygulamalarımız hakkında bir soru, destek talebi veya öneriniz mi var? Aşağıdaki form ile bize iletebilirsiniz.",
+                labelName: "Adınız / Rumuz",
+                labelEmail: "E-Posta Adresiniz",
+                labelApp: "İlgili Uygulama",
+                optGeneral: "Genel Sorular / Destek",
+                labelMsg: "Mesajınız",
+                btnSubmit: "Mesaj Gönder",
+                msgSuccess: "Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağız.",
+
+                modalNote: "Sizi doğrudan official Google Play Store indirme sayfasına yönlendiriyoruz. İndirdikten sonra değerlendirme yapmayı unutmayın!",
+                modalBtnPlay: "Play Store'da Aç",
+                modalClose: "Kapat",
+
+                footerRights: "Tüm Hakları Saklıdır.",
+                footerPrivacy: "Gizlilik Politikası",
+                footerTerms: "Kullanım Şartları",
+                footerSupport: "Destek"
+            },
+            en: {
+                navApps: "Apps & Games",
+                navHighlights: "Features",
+                navAbout: "About Us",
+                navContact: "Contact",
+                heroBadge: "Android Developer Studio",
+                heroTitleLine1: "Limitless Fun &",
+                heroTitleLine2: "Innovative Mobile",
+                heroTitleLine3: "Experiences",
+                heroDescription: "arda studio crafts user-focused mobile software on Google Play, ranging from feature-packed IPTV media players to addictive casual games.",
+                btnExplore: "Explore Apps",
+                btnPlayStore: "Play Store Profile",
+                statApps: "Featured Apps",
+                statUx: "User Friendly",
+                statOffline: "Offline Gaming",
+                appsTitlePrefix: "Featured",
+                appsTitleHighlight: "Apps & Games",
+                appsSub: "Explore official Google Play applications developed by arda studio. Built for high performance, smooth UI, and pure entertainment.",
+                filterAll: "All (4)",
+                filterGames: "Games",
+                filterMedia: "Apps & Media",
+
+                playioBadge: "Media & Video",
+                playioSubtitle: "IPTV & Mobile Media Player",
+                playioDesc: "Playio is an advanced mobile IPTV player that delivers fluid high-definition playback for live TV channels, M3U playlists, and custom media links.",
+                playioFeat1: "Custom Playlist & Category Support",
+                playioFeat2: "Smart EPG (Program Guide) Integration",
+                playioFeat3: "Low-Buffering Fast Playback Engine",
+
+                kurusBadge: "Fun Game",
+                kurusSubtitle: "Cultural & Fun Mobile Game",
+                kurusDesc: "A lively casual game featuring vibrant visuals and dynamic coin mechanics! Avoid obstacles, gather coins, and hit record high scores.",
+                kurusFeat1: "Addictive Arcade Gameplay",
+                kurusFeat2: "Custom Sound Effects & Music",
+                kurusFeat3: "Leaderboards & Daily Quests",
+
+                pesoBadge: "Arcade & Strategy",
+                pesoSubtitle: "Engaging Mobile Arcade",
+                pesoDesc: "1peso presents a thrilling tap-and-time arcade experience. Make quick decisions, conquer tricky stages, and climb the global leaderboards.",
+                pesoFeat1: "Smooth & Intuitive Controls",
+                pesoFeat2: "Diverse Level Progression",
+                pesoFeat3: "Lightweight & Fast Load Times",
+
+                offBadge: "Offline Games",
+                offSubtitle: "No WiFi Mini Games Collection",
+                offDesc: "Enjoy a rich collection of mini games anytime, anywhere without needing an internet connection! Perfect companion for airplane or subway trips.",
+                offFeat1: "100% Offline Gameplay Support",
+                offFeat2: "Puzzles, Action & Casual Minigames",
+                offFeat3: "Battery & Data Efficient Design",
+
+                tagFreeAndroid: "Free • Android",
+                tagFreeCasual: "Free • Casual",
+                tagFreeArcade: "Free • Arcade",
+                tagFreeSuite: "Free • Mini Games",
+                btnDownload: "View / Install",
+
+                featTag: "Why arda studio?",
+                featTitle: "Pillars of Our Mobile Experience",
+                featSub: "We prioritize smooth performance, user satisfaction, and clean design across every release.",
+                card1Title: "High Performance & Speed",
+                card1Desc: "Our optimized codebase ensures ultra-fast startup times with lightweight resource and battery consumption.",
+                card2Title: "Offline Access",
+                card2Desc: "Our games are designed to be fully playable without requiring an active WiFi or cellular network.",
+                card3Title: "User-Centric & Secure",
+                card3Desc: "We value privacy and craft sleek, intuitive user interfaces (UI/UX) for seamless interaction.",
+
+                aboutBadge: "About Developer",
+                aboutTitle: "arda studio Vision",
+                aboutP1: "arda studio is a mobile development group focused on building versatile utility applications and engaging Android games.",
+                aboutP2: "From streaming media with Playio to delivering fun casual games like 50 Kuruş, 1peso, and Offline Games, we continuously innovate on Google Play.",
+
+                contactTitle: "Get in Touch & Feedback",
+                contactSub: "Have a question, feedback, or support request regarding our apps? Feel free to reach out using the form below.",
+                labelName: "Your Name",
+                labelEmail: "Email Address",
+                labelApp: "Select Application",
+                optGeneral: "General Inquiries / Support",
+                labelMsg: "Your Message",
+                btnSubmit: "Send Message",
+                msgSuccess: "Your message has been sent successfully! We will respond shortly.",
+
+                modalNote: "You will be redirected directly to the official Google Play Store page. Don't forget to leave a review!",
+                modalBtnPlay: "Open in Play Store",
+                modalClose: "Close",
+
+                footerRights: "All Rights Reserved.",
+                footerPrivacy: "Privacy Policy",
+                footerTerms: "Terms of Service",
+                footerSupport: "Support"
+            }
+        };
+
+        let currentLang = 'tr';
+
+        // Toggle Language Function
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Update Language Indicator Text
+            const langIndicator = document.getElementById('lang-indicator');
+            if (langIndicator) {
+                langIndicator.textContent = lang === 'tr' ? 'TR | EN' : 'EN | TR';
+            }
+        }
+
+        // Language Switcher Button Event Listeners
+        document.getElementById('lang-toggle-btn').addEventListener('click', () => {
+            setLanguage(currentLang === 'tr' ? 'en' : 'tr');
+        });
+
+        document.getElementById('lang-toggle-btn-mobile').addEventListener('click', () => {
+            setLanguage(currentLang === 'tr' ? 'en' : 'tr');
+        });
+
+        // Mobile Nav Drawer Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Category Filtering Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const appCards = document.querySelectorAll('.app-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-cyan-500', 'text-white', 'shadow-lg', 'shadow-cyan-500/20');
+                    b.classList.add('glass-card', 'text-gray-300');
+                });
+
+                btn.classList.add('active', 'bg-cyan-500', 'text-white', 'shadow-lg', 'shadow-cyan-500/20');
+                btn.classList.remove('glass-card', 'text-gray-300');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                appCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filterValue === 'all' || category === filterValue) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // App Download Modal
+        const modal = document.getElementById('app-modal');
+        const modalTitle = document.getElementById('modal-app-title');
+        const modalSub = document.getElementById('modal-app-sub');
+
+        function openModal(appName, appCategory) {
+            modalTitle.textContent = appName;
+            modalSub.textContent = appCategory + ' • Play Store';
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Contact Form Handling
+        const contactForm = document.getElementById('contact-form');
+        const formSuccess = document.getElementById('form-success');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            formSuccess.classList.remove('hidden');
+            contactForm.reset();
+            setTimeout(() => {
+                formSuccess.classList.add('hidden');
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
